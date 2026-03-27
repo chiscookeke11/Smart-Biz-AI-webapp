@@ -7,6 +7,70 @@ import StatsBar from "@/components/dashboard-components/StatsBar";
 import DateFilter from "@/components/dashboard-components/DateFilter";
 import { Download } from "lucide-react";
 import { getDashboardStats, getRevenueGraphData, getRecentTransactions, getMonthlyPayments } from "@/actions/dashboardActions";
+import { Suspense } from "react";
+
+function StatsBarSkeleton() {
+    return (
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map(i => (
+                <div key={i} className="h-[120px] bg-white rounded-[12px] border border-[#E2E8F0] p-5 flex flex-col gap-3">
+                     <div className="h-4 w-24 bg-slate-200 rounded animate-pulse" />
+                     <div className="h-8 w-32 bg-slate-200 rounded animate-pulse" />
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function GraphSkeleton() {
+    return (
+        <div className="w-full h-[400px] bg-white rounded-[16px] border border-[#E2E8F0] p-6 flex flex-col gap-4">
+            <div className="h-6 w-48 bg-slate-200 rounded animate-pulse" />
+            <div className="flex-1 bg-slate-50 rounded-lg animate-pulse" />
+        </div>
+    );
+}
+
+function ListSkeleton() {
+    return (
+        <div className="w-full h-[350px] bg-white rounded-[16px] border border-[#E2E8F0] p-6 flex flex-col gap-4">
+             <div className="h-6 w-32 bg-slate-200 rounded animate-pulse" />
+             <div className="space-y-4 mt-4">
+                 {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-10 w-full bg-slate-50 rounded-lg animate-pulse" />)}
+             </div>
+        </div>
+    );
+}
+
+async function StatsContainer({ fromDate, toDate }: { fromDate?: Date, toDate?: Date }) {
+    const statsRes = await getDashboardStats(fromDate, toDate);
+    const stats = statsRes.success ? statsRes.stats : {
+        totalRevenue: 0,
+        paymentsReceived: 0,
+        pendingInvoices: 0,
+        revenueChange: "0%",
+        revenueTrend: "up" as const,
+    };
+    return <StatsBar stats={stats as any} />;
+}
+
+async function RevenueGraphContainer({ fromDate, toDate }: { fromDate?: Date, toDate?: Date }) {
+    const graphRes = await getRevenueGraphData(fromDate, toDate);
+    const graphData = graphRes.success && graphRes.chartData ? graphRes.chartData : [];
+    return <RevenueGraph data={graphData} />;
+}
+
+async function MonthlyPaymentsContainer() {
+    const paymentsRes = await getMonthlyPayments();
+    const monthlyPayments = paymentsRes.success && paymentsRes.monthlyPayments ? paymentsRes.monthlyPayments : [];
+    return <MonthlyPayments data={monthlyPayments} />;
+}
+
+async function RecentTransactionsContainer() {
+    const txRes = await getRecentTransactions(10);
+    const transactions = txRes.success && txRes.transactions ? txRes.transactions : [];
+    return <RecentTransactions transactions={transactions as any} />;
+}
 
 interface PageProps {
     searchParams: Promise<{
@@ -19,26 +83,6 @@ export default async function Page({ searchParams }: PageProps) {
     const params = await searchParams;
     const fromDate = params.from ? new Date(params.from) : undefined;
     const toDate = params.to ? new Date(params.to) : undefined;
-
-    // Fetch all required data in parallel
-    const [statsRes, graphRes, txRes, paymentsRes] = await Promise.all([
-        getDashboardStats(fromDate, toDate),
-        getRevenueGraphData(fromDate, toDate),
-        getRecentTransactions(10),
-        getMonthlyPayments(),
-    ]);
-
-    const stats = statsRes.success ? statsRes.stats : {
-        totalRevenue: 0,
-        paymentsReceived: 0,
-        pendingInvoices: 0,
-        revenueChange: "0%",
-        revenueTrend: "up" as const,
-    };
-
-    const graphData = graphRes.success && graphRes.chartData ? graphRes.chartData : [];
-    const transactions = txRes.success && txRes.transactions ? txRes.transactions : [];
-    const monthlyPayments = paymentsRes.success && paymentsRes.monthlyPayments ? paymentsRes.monthlyPayments : [];
 
     return (
         <div className="p-8 w-full flex flex-col gap-8">
@@ -58,13 +102,15 @@ export default async function Page({ searchParams }: PageProps) {
                 </div>
             </div>
 
-            {/* The stats bar showing the main metrics */}
-            <StatsBar stats={stats as any} />
+            <Suspense fallback={<StatsBarSkeleton />}>
+                <StatsContainer fromDate={fromDate} toDate={toDate} />
+            </Suspense>
 
             <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left Column - Large Components */}
                 <div className="lg:col-span-2 flex flex-col gap-8">
-                    <RevenueGraph data={graphData} />
+                    <Suspense fallback={<GraphSkeleton />}>
+                        <RevenueGraphContainer fromDate={fromDate} toDate={toDate} />
+                    </Suspense>
                 </div>
 
                 {/* Right Column - Sidebar Style Components */}
@@ -72,10 +118,13 @@ export default async function Page({ searchParams }: PageProps) {
                     <QuickActions />
                 </div>
             </div>
+            
             <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column - Large Components */}
                 <div className="lg:col-span-2 flex flex-col gap-8">
-                    <MonthlyPayments data={monthlyPayments} />
+                    <Suspense fallback={<ListSkeleton />}>
+                        <MonthlyPaymentsContainer />
+                    </Suspense>
                 </div>
 
                 {/* Right Column - Sidebar Style Components */}
@@ -83,8 +132,11 @@ export default async function Page({ searchParams }: PageProps) {
                     <AskSmartBizAI />
                 </div>
             </div>
+            
             <div className="w-full">
-                <RecentTransactions transactions={transactions as any} />
+                <Suspense fallback={<ListSkeleton />}>
+                    <RecentTransactionsContainer />
+                </Suspense>
             </div>
         </div>
     )

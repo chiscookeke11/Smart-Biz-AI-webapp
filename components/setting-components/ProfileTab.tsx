@@ -106,7 +106,7 @@ export default function ProfileTab({ initialData }: ProfileTabProps) {
     };
 
     const handleCopyLink = () => {
-        const domain = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : "");
+        const domain = process.env.NEXT_PUBLIC_HOME_URL || (typeof window !== 'undefined' ? window.location.origin : "");
         navigator.clipboard.writeText(`${domain}/store/${formData.slug}`);
     };
 
@@ -351,7 +351,7 @@ export default function ProfileTab({ initialData }: ProfileTabProps) {
 
                     <div className="flex-1">
                         <div className="flex items-center border border-[#E2E8F0] rounded-lg overflow-hidden bg-[#F8FAFC]">
-                            <span className="px-3 text-sm text-[#94A3B8] whitespace-nowrap">{process.env.NEXT_PUBLIC_APP_URL}/store/</span>
+                            <span className="px-3 text-sm text-[#94A3B8] whitespace-nowrap">{process.env.NEXT_PUBLIC_HOME_URL}/store/</span>
                             <input
                                 type="text"
                                 name="slug"

@@ -34,12 +34,12 @@ export const side_nav_links = [
         isBeta: false,
     },
 
-    {
-        label: "Whatsapp Demo",
-        path: "#",
-        icon: Sparkle,
-        isBeta: true,
-    },
+    // {
+    //     label: "Whatsapp Demo",
+    //     path: "#",
+    //     icon: Sparkle,
+    //     isBeta: true,
+    // },
     {
         label: "Subscription",
         path: "#",

@@ -155,7 +155,7 @@ export async function sendPublicChatMessage(
                         );
                         
                         if (invoiceResult.success) {
-                            const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+                            const appUrl = process.env.NEXT_PUBLIC_HOME_URL;
                             result = { 
                                 success: true, 
                                 invoiceId: invoiceResult.invoiceId,

@@ -12,7 +12,7 @@ interface ConfirmationProps {
 export default function Confirmation({ slug, onFinish }: ConfirmationProps) {
     const [copied, setCopied] = useState(false);
     
-    const domain = typeof window !== 'undefined' ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL;
+    const domain = typeof window !== 'undefined' ? window.location.origin : process.env.NEXT_PUBLIC_HOME_URL;
     const chatbotLink = `${domain}/store/${slug}`;
 
     const handleCopy = () => {

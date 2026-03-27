@@ -62,15 +62,13 @@ async function verifyPayment(request: NextRequest) {
             return NextResponse.redirect(new URL(`/dashboard/invoices/${invoiceId}?error=Missing+payment+configuration`, request.url), { status: 303 });
         }
 
-        // Requery endpoint base URL
         const baseUrl = mode === "TEST" 
             ? "https://qa.interswitchng.com" 
             : "https://webpay.interswitchng.com";
 
-        // Call Interswitch GET transaction verification endpoint (Requery)
+        // Call Interswitch transaction verification endpoint
         const verifyUrl = `${baseUrl}/collections/api/v1/gettransaction.json?merchantcode=${merchantCode}&transactionreference=${txnRef}&amount=${amountInKobo}`;
         
-        // Generate Security Headers (Signature-based)
         const securityHeaders = getInterswitchAuthHeaders("GET", verifyUrl);
 
         const response = await fetch(verifyUrl, {

@@ -3,11 +3,10 @@
 import { getInvoiceById } from "./invoiceActions";
 
 /**
- * Parameters required for Interswitch Web Redirect
+ * Parameters required for Interswitch Payment
  */
 export async function getPaymentParams(invoiceId: string) {
     try {
-        // Get invoice details
         const result = await getInvoiceById(invoiceId);
         if (!result.success || !result.invoice) {
             return { success: false, error: result.error || "Invoice not found" };
@@ -20,14 +19,12 @@ export async function getPaymentParams(invoiceId: string) {
 
         const merchantCode = process.env.INTERSWITCH_MERCHANT_CODE;
         const payItemId = process.env.INTERSWITCH_PAYABLE_CODE;
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+        const appUrl = process.env.NEXT_PUBLIC_HOME_URL;
         const mode = process.env.INTERSWITCH_MODE;
 
         if (!merchantCode || !payItemId || !appUrl || !mode) {
             return { success: false, error: "Missing Interswitch configuration" };
         }
-
-        // Base URL for the Web Redirect hosted page
         const actionUrl = mode === "TEST"
             ? "https://newwebpay.qa.interswitchng.com/collections/w/pay"
             : "https://newwebpay.interswitchng.com/collections/w/pay";
@@ -78,7 +75,7 @@ export async function getPublicPaymentParams(invoiceId: string) {
 
         const merchantCode = process.env.INTERSWITCH_MERCHANT_CODE;
         const payItemId = process.env.INTERSWITCH_PAYABLE_CODE;
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+        const appUrl = process.env.NEXT_PUBLIC_HOME_URL;
         const mode = process.env.INTERSWITCH_MODE;
 
         if (!merchantCode || !payItemId || !appUrl || !mode) {
