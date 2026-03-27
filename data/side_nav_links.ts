@@ -9,12 +9,12 @@ export const side_nav_links = [
         icon: LayoutDashboard,
         isBeta: false,
     },
-    {
-        label: "Leads",
-        path: "/dashboard/leads",
-        icon: Users,
-        isBeta: false,
-    },
+    // {
+    //     label: "Leads",
+    //     path: "/dashboard/leads",
+    //     icon: Users,
+    //     isBeta: false,
+    // },
     {
         label: "Products",
         path: "/dashboard/products",

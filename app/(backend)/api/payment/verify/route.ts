@@ -133,15 +133,16 @@ async function verifyPayment(request: NextRequest) {
                 },
             });
 
-            return NextResponse.redirect(new URL(`/dashboard/invoices/${invoiceId}?success=Payment+verified+successfully`, request.url), { status: 303 });
+            // Redirect to public success page for customers
+            return NextResponse.redirect(new URL(`/store/${invoice.sme.slug}/success?invoiceId=${invoiceId}`, request.url), { status: 303 });
         } else {
             const errorMsg = data.ResponseDescription || "Payment was not successful";
             console.warn("[PAYMENT] Transaction failed according to Interswitch:", errorMsg);
-            return NextResponse.redirect(new URL(`/dashboard/invoices/${invoiceId}?error=${encodeURIComponent(errorMsg)}`, request.url), { status: 303 });
+            return NextResponse.redirect(new URL(`/store/${invoice.sme.slug}?error=${encodeURIComponent(errorMsg)}`, request.url), { status: 303 });
         }
     } catch (error: any) {
         console.error("[PAYMENT] Verification internal error:", error);
-        return NextResponse.redirect(new URL(`/dashboard/invoices/${invoiceId}?error=Internal+server+error`, request.url), { status: 303 });
+        return NextResponse.redirect(new URL(`/`, request.url), { status: 303 });
     }
 }
 

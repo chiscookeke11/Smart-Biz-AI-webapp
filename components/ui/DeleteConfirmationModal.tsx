@@ -24,12 +24,12 @@ export default function DeleteConfirmationModal({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-110 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-110 flex items-start justify-center p-4 overflow-y-auto">
             <div 
                 className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity cursor-default"
                 onClick={() => !isPending && onClose()}
             />
-            <div className="relative bg-white w-full max-w-[400px] rounded-[24px] shadow-2xl p-8 flex flex-col items-center text-center gap-6 animate-in fade-in zoom-in duration-200">
+            <div className="relative bg-white w-full max-w-[400px] rounded-[24px] shadow-2xl p-8 flex flex-col items-center text-center gap-6 animate-in fade-in zoom-in duration-200 my-auto">
                 <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center text-[#EF4444]">
                     <AlertTriangle size={32} />
                 </div>

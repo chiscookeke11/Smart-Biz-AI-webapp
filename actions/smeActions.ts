@@ -57,6 +57,16 @@ export async function updateSme(data: SmeInput) {
             return { success: false, error: "SME not found" };
         }
 
+        // Check if slug is changing and if it is already taken
+        if (validatedData.slug !== existingSme.slug) {
+            const slugTaken = await prisma.sme.findUnique({
+                where: { slug: validatedData.slug }
+            });
+            if (slugTaken) {
+                return { success: false, error: "This Store URL is already taken. Please choose another one." };
+            }
+        }
+
         const updatedSme = await prisma.sme.update({
             where: { id: existingSme.id },
             data: validatedData,

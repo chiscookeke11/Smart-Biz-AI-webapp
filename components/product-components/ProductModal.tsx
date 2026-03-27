@@ -89,7 +89,6 @@ export default function ProductModal({ isOpen, onClose, initialData, mode }: Pro
             }
         });
     };
-
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -102,8 +101,14 @@ export default function ProductModal({ isOpen, onClose, initialData, mode }: Pro
     };
 
     return (
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white w-full max-w-[600px] rounded-[24px] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div 
+            onClick={onClose}
+            className="fixed inset-0 z-100 flex items-start justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto"
+        >
+            <div 
+                onClick={(e) => e.stopPropagation()}
+                className="bg-white w-full max-w-[600px] rounded-[24px] shadow-2xl overflow-hidden flex flex-col my-8 h-fit max-h-[90vh]"
+            >
                 {/* Header */}
                 <div className="p-8 border-b border-[#E2E8F0] relative">
                     <button 

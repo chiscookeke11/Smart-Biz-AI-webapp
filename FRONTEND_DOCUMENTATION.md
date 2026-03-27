@@ -152,4 +152,4 @@ When adding a new frontend feature, update the following where applicable:
 - If you add a new domain area (e.g., analytics, campaigns), follow the existing domain-folder component pattern.
 
 
-Okeke Chinedu - Fullstack Developer
+Okeke Chinedu Emmanuel - Fullstack Developer

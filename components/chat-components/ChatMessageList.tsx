@@ -17,11 +17,13 @@ interface MessageAction {
     label: string;
     variant: "primary" | "outline";
     icon?: "send" | "view";
+    url?: string;
 }
 
 interface ChatMessageListProps {
     messages: ChatMessage[];
     isLoading: boolean;
+    onActionClick?: (label: string, value: string) => void;
 }
 
 function formatTime(date: Date): string {
@@ -48,7 +50,7 @@ function ActionIcon({ icon }: { icon?: "send" | "view" }) {
     return null;
 }
 
-export default function ChatMessageList({ messages, isLoading }: ChatMessageListProps) {
+export default function ChatMessageList({ messages, isLoading, onActionClick }: ChatMessageListProps) {
     const bottomRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -80,7 +82,7 @@ export default function ChatMessageList({ messages, isLoading }: ChatMessageList
                             {msg.role === "user" ? (
                                 <UserBubble message={msg} />
                             ) : (
-                                <AssistantBubble message={msg} />
+                                <AssistantBubble message={msg} onActionClick={onActionClick} />
                             )}
                         </div>
                     );
@@ -131,7 +133,7 @@ function UserBubble({ message }: { message: ChatMessage }) {
     );
 }
 
-function AssistantBubble({ message }: { message: ChatMessage }) {
+function AssistantBubble({ message, onActionClick }: { message: ChatMessage; onActionClick?: (label: string, value: string) => void }) {
     return (
         <div className="flex flex-col gap-2">
             <div className="flex items-start gap-3">
@@ -156,6 +158,7 @@ function AssistantBubble({ message }: { message: ChatMessage }) {
                                     <button
                                         key={action.label}
                                         type="button"
+                                        onClick={() => onActionClick?.(action.label, action.url || message.id)}
                                         className={`flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-colors ${
                                             action.variant === "primary"
                                                 ? "bg-[#EB5119] text-white hover:bg-[#D4410F]"

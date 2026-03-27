@@ -106,11 +106,8 @@ export default function ProfileTab({ initialData }: ProfileTabProps) {
     };
 
     const handleCopyLink = () => {
-        const slug = formData.businessName
-            .toLowerCase()
-            .replace(/\s+/g, "-")
-            .replace(/[^a-z0-9-]/g, "");
-        navigator.clipboard.writeText(`smartbiz.ai/store/${slug}`);
+        const domain = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : "");
+        navigator.clipboard.writeText(`${domain}/store/${formData.slug}`);
     };
 
     return (
@@ -354,18 +351,13 @@ export default function ProfileTab({ initialData }: ProfileTabProps) {
 
                     <div className="flex-1">
                         <div className="flex items-center border border-[#E2E8F0] rounded-lg overflow-hidden bg-[#F8FAFC]">
-                            <span className="px-3 text-sm text-[#94A3B8] whitespace-nowrap">smartbiz.ai/store/</span>
+                            <span className="px-3 text-sm text-[#94A3B8] whitespace-nowrap">{process.env.NEXT_PUBLIC_APP_URL}/store/</span>
                             <input
                                 type="text"
-                                readOnly
-                                value={
-                                    formData.businessName
-                                        ? formData.businessName
-                                            .toLowerCase()
-                                            .replace(/\s+/g, "-")
-                                            .replace(/[^a-z0-9-]/g, "")
-                                        : "your-store"
-                                }
+                                name="slug"
+                                value={formData.slug || ""}
+                                onChange={handleChange}
+                                placeholder="your-store"
                                 className="flex-1 py-3 text-sm font-bold text-[#0F172A] bg-transparent outline-none"
                             />
                             <button
@@ -377,6 +369,9 @@ export default function ProfileTab({ initialData }: ProfileTabProps) {
                                 Copy Link
                             </button>
                         </div>
+                        {errors.slug && (
+                            <p className="text-xs text-red-500 mt-1">{errors.slug}</p>
+                        )}
                     </div>
                 </div>
             </section>

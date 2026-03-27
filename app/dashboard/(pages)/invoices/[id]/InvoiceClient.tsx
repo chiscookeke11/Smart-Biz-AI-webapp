@@ -241,19 +241,26 @@ export default function InvoiceClient({ invoice }: InvoiceClientProps) {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-[#E2E8F0]">
-                                {items.map((item: any, idx: number) => (
-                                    <tr key={idx} className="hover:bg-[#F8FAFC] transition-colors  ">
-                                        <td className="px-6 py-4 text-sm font-semibold text-[#0F172A]">
-                                            <div className="flex flex-col">
-                                                <span>{item.description}</span>
-                                                <span className="text-xs text-gray-500 font-normal">{item.details}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-sm font-semibold text-[#0F172A]">{item.quantity}</td>
-                                        <td className="px-6 py-4 text-sm font-semibold text-[#0F172A]">₦{item.rate.toLocaleString()}</td>
-                                        <td className="px-6 py-4 text-sm font-semibold text-[#0F172A]">₦{(item.quantity * item.rate).toLocaleString()}</td>
-                                    </tr>
-                                ))}
+                                {items.map((item: any, idx: number) => {
+                                    const description = item.description || item.name || "Item";
+                                    const rate = item.rate || item.price || 0;
+                                    const quantity = item.quantity || 0;
+                                    const amount = quantity * rate;
+                                    
+                                    return (
+                                        <tr key={idx} className="hover:bg-[#F8FAFC] transition-colors  ">
+                                            <td className="px-6 py-4 text-sm font-semibold text-[#0F172A]">
+                                                <div className="flex flex-col">
+                                                    <span>{description}</span>
+                                                    <span className="text-xs text-gray-500 font-normal">{item.details || ""}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-sm font-semibold text-[#0F172A]">{quantity}</td>
+                                            <td className="px-6 py-4 text-sm font-semibold text-[#0F172A]">₦{rate.toLocaleString()}</td>
+                                            <td className="px-6 py-4 text-sm font-semibold text-[#0F172A]">₦{amount.toLocaleString()}</td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </div>

@@ -104,9 +104,16 @@ export default function CreateInvoiceModal({ setOpenModal }: CreateInvoiceModalP
     };
 
     return (
-        <div className="w-full fixed inset-0 h-full bg-[#0F172A66] px-4 py-25 flex items-center justify-center z-50 overflow-y-auto"  >
+        <div 
+            onClick={() => setOpenModal(false)}
+            className="w-full fixed inset-0 h-full bg-[#0F172A66] px-4 py-8 flex items-start justify-center z-50 overflow-y-auto"  
+        >
 
-            <form onSubmit={handleSubmit} className="w-full max-w-4xl h-fit flex flex-col bg-[#FFFFFF] rounded-[12px] border border-[#E2E8F0] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] overflow-hidden my-8" >
+            <form 
+                onClick={(e) => e.stopPropagation()}
+                onSubmit={handleSubmit} 
+                className="w-full max-w-4xl h-fit flex flex-col bg-[#FFFFFF] rounded-[12px] border border-[#E2E8F0] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] overflow-hidden my-8" 
+            >
 
                 <div className="w-full flex items-center justify-between gap-3 py-5 px-8 border-b border-[#F1F5F9]  " >
                     <div className="flex flex-col items-start gap-1 " >

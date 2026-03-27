@@ -12,9 +12,8 @@ interface ConfirmationProps {
 export default function Confirmation({ slug, onFinish }: ConfirmationProps) {
     const [copied, setCopied] = useState(false);
     
-    // Fallback if env not explicitly loaded in browser. Or hardcode domain based on app config
-    const domain = typeof window !== 'undefined' ? window.location.origin : "https://smartbiz.ai";
-    const chatbotLink = `${domain}/chat/${slug || "v3x-9921-alpha"}`;
+    const domain = typeof window !== 'undefined' ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL;
+    const chatbotLink = `${domain}/store/${slug}`;
 
     const handleCopy = () => {
         navigator.clipboard.writeText(chatbotLink);

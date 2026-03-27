@@ -32,6 +32,7 @@ export default async function Page() {
                     nationalId: sme?.nationalId || "",
                     cacRegistration: sme?.cacRegistration || "",
                     logoUrl: sme?.logoUrl || "",
+                    slug: sme?.slug || "",
                     aiTone: (sme?.aiTone as any) || "professional",
                     language: sme?.language || "en-US",
                     autoInvoicing: sme?.autoInvoicing ?? true,

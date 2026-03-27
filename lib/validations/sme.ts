@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const SmeSchema = z.object({
     businessName: z.string().min(2, "Business name must be at least 2 characters"),
+    slug: z.string().min(3, "Store URL slug must be at least 3 characters").regex(/^[a-z0-9-]+$/, "Slug can only contain lowercase letters, numbers, and hyphens"),
     description: z.string().min(10, "Description must be at least 10 characters").optional().nullable(),
     email: z.string().email("Invalid email address"),
     whatsapp: z.string().min(10, "WhatsApp number must be at least 10 digits").optional().or(z.literal("")),
