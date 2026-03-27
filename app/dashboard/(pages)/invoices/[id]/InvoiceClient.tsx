@@ -63,7 +63,7 @@ export default function InvoiceClient({ invoice }: InvoiceClientProps) {
         pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
         pdf.save(`invoice-${invoice.invoiceNumber}.pdf`);
     };
-    
+
     const handlePayNow = async () => {
         setIsPaying(true);
         try {
@@ -93,7 +93,7 @@ export default function InvoiceClient({ invoice }: InvoiceClientProps) {
         const query = new URLSearchParams(window.location.search);
         const success = query.get("success");
         const error = query.get("error");
-        
+
         if (success) {
             alert(success);
             window.history.replaceState({}, document.title, window.location.pathname);
@@ -160,20 +160,20 @@ export default function InvoiceClient({ invoice }: InvoiceClientProps) {
                     <div className="w-full bg-[#F8FAFC80] py-6 px-4 md:px-8 flex items-center justify-between gap-10 relative overflow-hidden " >
                         {/* Status Badge Watermark/Overlay */}
                         <div className={`absolute top-4 right-0 px-8 py-1 transform rotate-45 translate-x-8 -translate-y-2 text-[10px] font-bold tracking-widest uppercase shadow-sm ${
-                            invoice.status === "PAID" 
-                            ? "bg-[#16A34A] text-white" 
+                            invoice.status === "PAID"
+                            ? "bg-[#16A34A] text-white"
                             : "bg-[#E2E8F0] text-[#64748B]"
                         }`}>
                             {invoice.status}
                         </div>
 
                         <Link href={"/"} >
-                            <Image 
-                                src={invoice.sme.logoUrl || "/logos/smartBiz.png"} 
-                                alt="logo" 
-                                width={157} 
-                                height={36} 
-                                className=" w-30 md:w-33.5 h-auto object-center object-contain " 
+                            <Image
+                                src={invoice.sme.logoUrl || "/logos/smartBiz.png"}
+                                alt="logo"
+                                width={157}
+                                height={36}
+                                className=" w-30 md:w-33.5 h-auto object-center object-contain "
                             />
                         </Link>
 
@@ -190,9 +190,9 @@ export default function InvoiceClient({ invoice }: InvoiceClientProps) {
                             <h5 className="text-[#EB5119] text-xs font-bold flex items-center gap-2  " > < Upload size={9.3} /> SENDER</h5>
                             <div className="w-full flex items-start flex-col gap-[3.13px] "  >
                                 <h4 className="text-[#0F172A] font-bold text-lg " >{invoice.sme.businessName}</h4>
-                                <p className="w-full max-w-51.5 text-[#475569] text-sm font-normal whitespace-pre-line " > 
+                                <p className="w-full max-w-51.5 text-[#475569] text-sm font-normal whitespace-pre-line " >
                                     {invoice.sme.address || "Address not provided"}
-                                    <span className="text-[#0F172A] block mt-1" > {invoice.sme.email}</span> 
+                                    <span className="text-[#0F172A] block mt-1" > {invoice.sme.email}</span>
                                 </p>
                             </div>
                         </div>
@@ -202,8 +202,8 @@ export default function InvoiceClient({ invoice }: InvoiceClientProps) {
                             <h5 className="text-[#94A3B8] text-xs font-bold flex items-center gap-2  " > < Download size={9.3} /> RECIPIENT</h5>
                             <div className="w-full flex items-end md:items-start flex-col gap-[3.13px] "  >
                                 <h4 className="text-[#0F172A] font-bold text-lg " >{invoice.customerName}</h4>
-                                <p className="w-full max-w-51.5 text-[#475569] text-sm font-normal " > 
-                                    <span className="text-[#0F172A] " > {invoice.customerEmail}</span> 
+                                <p className="w-full max-w-51.5 text-[#475569] text-sm font-normal " >
+                                    <span className="text-[#0F172A] " > {invoice.customerEmail}</span>
                                 </p>
                             </div>
                         </div>
@@ -246,7 +246,7 @@ export default function InvoiceClient({ invoice }: InvoiceClientProps) {
                                     const rate = item.rate || item.price || 0;
                                     const quantity = item.quantity || 0;
                                     const amount = quantity * rate;
-                                    
+
                                     return (
                                         <tr key={idx} className="hover:bg-[#F8FAFC] transition-colors  ">
                                             <td className="px-6 py-4 text-sm font-semibold text-[#0F172A]">
@@ -302,7 +302,7 @@ export default function InvoiceClient({ invoice }: InvoiceClientProps) {
                             <CreditCard size={24} />
                             <ShieldHalf size={24} />
                         </div>
-                        <p className="text-[#64748B] font-normal max-w-[567px] text-center text-sm ">
+                        <p className="text-[#64748B] font-normal max-w-141.75 text-center text-sm ">
                             Thank you for Choosing {invoice.sme.businessName} via SmartBiz AI. Please remit payment within the agreed timeframe to avoid service interruption.
                         </p>
                         <small className="w-full max-w-[583px] flex items-center justify-center   "  >
